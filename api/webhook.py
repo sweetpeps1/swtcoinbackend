@@ -32,12 +32,11 @@ async def start(message):
     user_language_code = str(message.from_user.language_code)
     is_premium = message.from_user.is_premium
     text = message.text.split()
-   
     welcome_message = (
-        f"Hi 👋, { user_first_name}!\n\n "
-        f"Welcome to Beycoin! 💰\n\n "
-        f"Here you can earn coins by mining them! ⛏️\n\n "
-        f"Invite friends to earn more coins together, and level up faster! 🚀"
+        f"Hi, { user_first_name}!\n\n"
+        f"Welcome to SwtCoin!💰\n\n"
+        f"Here you can earn coins by mining them!\n\n"
+        f"Invite friends to earn more coins together, and level up faster!"
     )
 
     try:
@@ -55,9 +54,7 @@ async def start(message):
                 response = requests.get(file_url)
                 if response.status_code == 200:
                     blob = bucket.blob(f"user_images/{user_id}.jpg")
-                    blob.upload_from_string(response.content, content_type='image/jpeg')
-
-
+                    blob.upload_from_string(response.content, content_type='image/jpeg')    
                     user_image = blob.generate_signed_url(datetime.timedelta(days=365), method='GET')
                 else:
                     user_image = None
@@ -90,7 +87,9 @@ async def start(message):
 
                 if referrer_doc.exists:
                     user_data['referredBy'] = referrer_id
+
                     referrer_data = referrer_doc.to_dict()
+                    
                     bonus_amount = 500 if is_premium else 100
 
                     current_balance = referrer_data.get('balance', 0)
